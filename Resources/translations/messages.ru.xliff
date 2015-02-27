@@ -53,6 +53,11 @@
                 <target>Список страниц</target>
             </trans-unit>
 
+            <trans-unit id="etfostra_slug_hint">
+                <source>etfostra_slug_hint</source>
+                <target>Поле будет заполнено из названия</target>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>

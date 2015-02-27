@@ -44,6 +44,15 @@ class PageAdminController extends CRUDController
         }
 
         $root = PageQuery::create()->findRoot();
+
+        if(!$root) {
+            $root = new Page();
+            $root->setLocale($request->getLocale());
+            $root->setTitle('Home');
+            $root->makeRoot();
+            $root->save();
+        }
+
         $root->setLocale($request->getLocale());
 
         $buildTree = function(Page $root, &$buildTree) {

@@ -53,6 +53,11 @@
                 <target>Page List</target>
             </trans-unit>
 
+            <trans-unit id="etfostra_slug_hint">
+                <source>etfostra_slug_hint</source>
+                <target>This field generates from title</target>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>
