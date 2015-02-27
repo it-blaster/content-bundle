@@ -1,10 +1,11 @@
 parameters:
     etfostra_content.admin.class: Etfostra\ContentBundle\Admin\PageAdmin
     etfostra_content.model.class: Etfostra\ContentBundle\Model\Page
+    etfostra_content.base_controller_name: EtfostraContentBundle:PageAdmin
 
 services:
     etfostra_content.admin.page:
         class: %etfostra_content.admin.class%
-        arguments: [~, %etfostra_content.model.class%, EtfostraContentBundle:PageAdmin]
+        arguments: [~, %etfostra_content.model.class%, %etfostra_content.base_controller_name%]
         tags:
             - {name: sonata.admin, manager_type: propel, group: artsofte_content_group_label, label: etfostra_content_item_label}
