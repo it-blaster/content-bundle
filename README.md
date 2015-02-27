@@ -11,7 +11,7 @@ Add to `composer.json` and install
 }
 ```
 
-Add bundle to AppKernel.php
+Add bundle to `AppKernel.php`
 ``` php
 <?php
 // app/AppKernel.php
