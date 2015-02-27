@@ -3,11 +3,27 @@
 ## Installation
 Add to composer.json and install
 
-    "it-blaster/content-bundle": "dev-master"
+```js
+{
+    "require": {
+        "it-blaster/content-bundle": "dev-master"
+	},
+}
+```
 
 Add bundle to AppKernel.php
+``` php
+<?php
+// app/AppKernel.php
 
-    new Etfostra\ContentBundle\EtfostraContentBundle()
+public function registerBundles()
+{
+    $bundles = array(
+        // ...
+        new Etfostra\ContentBundle\EtfostraContentBundle(),
+    );
+}
+```
     
 
 
