@@ -1,7 +1,7 @@
 # ContentBundle
 
 ## Installation
-Add to composer.json and install
+Add to `composer.json` and install
 
 ```js
 {
@@ -15,7 +15,6 @@ Add bundle to AppKernel.php
 ``` php
 <?php
 // app/AppKernel.php
-
 public function registerBundles()
 {
     $bundles = array(
@@ -25,5 +24,7 @@ public function registerBundles()
 }
 ```
     
+Edit your `config.yml`, add etfostra_content:
 
-
+    etfostra_content:
+        frontend_controllers_namespace: Artsofte\MainBundle
