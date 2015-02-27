@@ -15,7 +15,9 @@
 
         <behavior name="timestampable" />
 
-        <behavior name="sluggable" />
+        <behavior name="sluggable">
+            <parameter name="primary_string" value="title" />
+        </behavior>
 
         <behavior name="nested_set" />
 
