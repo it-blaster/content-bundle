@@ -1,0 +1,10 @@
+#SearchContentTree {
+    font-size: 16px;
+    padding: 4px;
+    vertical-align: bottom;
+    margin-left: 20px;
+}
+
+.jstree-default .jstree-search {
+    color: #000000;
+}

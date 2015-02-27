@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database
+        name="default"
+        defaultIdMethod="native"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://xsd.propelorm.org/1.7/database.xsd"
+        namespace="Etfostra\ContentBundle\Model">
+
+    <table name="page" description="Структура страниц сайта">
+        <column name="id"       type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="title"    type="varchar" required="true" primaryString="true" />
+        <column name="content"  type="longvarchar" required="false" />
+        <column name="active"   type="boolean" defaultValue="true" />
+        <column name="module"   type="varchar" />
+
+        <behavior name="timestampable" />
+
+        <behavior name="sluggable" />
+
+        <behavior name="nested_set" />
+
+        <behavior name="archivable" />
+
+        <behavior name="i18n">
+            <parameter name="i18n_columns" value="title, content, active" />
+        </behavior>
+    </table>
+
+</database>

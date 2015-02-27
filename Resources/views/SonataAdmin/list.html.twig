@@ -1,0 +1,48 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jstree/3.0.9/jstree.min.js"></script>
+    <script src="{{ asset('bundles/etfostracontent/js/ContentTree.js') }}"></script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.0.9/themes/default/style.min.css" />
+    <link rel="stylesheet" href="{{ asset('bundles/etfostracontent/css/ContentTree.css') }}" />
+{% endblock %}
+
+{% block sonata_admin_content %}
+
+    <div class="well well-small form-actions">
+        <button id="AddContentTree" class="btn btn-success" name="btn_update_and_edit"><i class="fa fa-plus"></i> {{ "etfostra_add_page"|trans }}</button>
+        <button id="EditContentTree" class="btn btn-success" data-href="{{ path('admin_etfostra_content_page_edit', {'id':'-page-id-'}) }}"><i class="fa fa-pencil"></i> {{ "etfostra_edit_page"|trans }}</button>
+        <button id="DeleteContentTree" class="btn btn-danger" data-href="{{ path('admin_etfostra_content_page_delete', {'id':'-page-id-'}) }}">{{ "etfostra_delete_page"|trans }}</button>
+        <input id="SearchContentTree" type="text" placeholder="{{ "etfostra_search_label"|trans }}">
+    </div>
+
+    <div class="row">
+        <div class="sonata-ba-list col-md-10">
+
+            <div
+                    id="ContentTree"
+                    data-source="{{ path('admin_etfostra_content_page_jsonTreeSource') }}"
+                    data-add="{{ path('admin_etfostra_content_page_ajaxAdd') }}"
+                    data-edit="{{ path('admin_etfostra_content_page_ajaxRename') }}"
+                    data-delete="{{ path('admin_etfostra_content_page_ajaxDelete') }}"
+                    data-delete-confirm="{{ 'message_delete_confirmation'|trans({}, 'SonataAdminBundle') }}"
+                    data-move="{{ path('admin_etfostra_content_page_ajaxMove') }}"
+
+                    data-add-error="{{ 'etfostra_add_error'|trans }}"
+                    data-rename-error="{{ 'etfostra_rename_error'|trans }}"
+                    data-delete-error="{{ 'etfostra_delete_error'|trans }}"
+                    data-move-error="{{ 'etfostra_move_error'|trans }}"
+                    >
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

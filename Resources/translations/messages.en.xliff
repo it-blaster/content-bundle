@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="">
+        <body>
+
+            <trans-unit id="etfostra_content_item_label">
+                <source>etfostra_content_item_label</source>
+                <target>Pages</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_search_label">
+                <source>etfostra_search_label</source>
+                <target>Search</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_add_page">
+                <source>etfostra_add_page</source>
+                <target>Add page</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_edit_page">
+                <source>etfostra_edit_page</source>
+                <target>Edit page</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_delete_page">
+                <source>etfostra_delete_page</source>
+                <target>Delete</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_add_error">
+                <source>etfostra_add_error</source>
+                <target>Error while creating node</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_rename_error">
+                <source>etfostra_rename_error</source>
+                <target>Error while renaming node</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_delete_error">
+                <source>etfostra_delete_error</source>
+                <target>Error while deleting node</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_move_error">
+                <source>etfostra_move_error</source>
+                <target>Error while moving node</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_page_list_label">
+                <source>Page List</source>
+                <target>Page List</target>
+            </trans-unit>
+
+        </body>
+    </file>
+</xliff>

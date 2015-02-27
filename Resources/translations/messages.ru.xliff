@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="">
+        <body>
+
+            <trans-unit id="etfostra_content_item_label">
+                <source>etfostra_content_item_label</source>
+                <target>Страницы</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_search_label">
+                <source>etfostra_search_label</source>
+                <target>Поиск</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_add_page">
+                <source>etfostra_add_page</source>
+                <target>Добавить</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_edit_page">
+                <source>etfostra_edit_page</source>
+                <target>Редактировать</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_delete_page">
+                <source>etfostra_delete_page</source>
+                <target>Удалить</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_add_error">
+                <source>etfostra_add_error</source>
+                <target>Ошибка при создании записи</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_rename_error">
+                <source>etfostra_rename_error</source>
+                <target>Ошибка при переименовании записи</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_delete_error">
+                <source>etfostra_delete_error</source>
+                <target>Ошибка при удалении записи</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_move_error">
+                <source>etfostra_move_error</source>
+                <target>Ошибка при перемещении записи</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_page_list_label">
+                <source>Page List</source>
+                <target>Список страниц</target>
+            </trans-unit>
+
+        </body>
+    </file>
+</xliff>
