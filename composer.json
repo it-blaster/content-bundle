@@ -2,7 +2,15 @@
     "name": "it-blaster/content-bundle",
     "description": "Symfony2 bundle for site content management, require Propel, Sonata and jstree",
     "type": "symfony-bundle",
+    "keywords": ["content", "tree", "structure", "nested set"],
+    "homepage": "https://github.com/it-blaster/content-bundle",
     "license" : "MIT",
+    "authors": [
+        {
+            "name": "IT-Blaster",
+            "email": "it-blaster@yandex.ru"
+        }
+    ],
     "require": {
         "symfony/symfony": ">=2.2",
         "propel/propel-bundle": ">=1.0",
