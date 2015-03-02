@@ -27,4 +27,4 @@ public function registerBundles()
 Edit your `config.yml`, add etfostra_content:
 
     etfostra_content:
-        frontend_controllers_namespace: Artsofte\MainBundle
+        frontend_controllers_namespace: Acme\AppBundle

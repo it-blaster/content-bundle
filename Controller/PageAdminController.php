@@ -118,6 +118,7 @@ class PageAdminController extends CRUDController
         ]);
     }
 
+
     /**
      * @param Request $request
      * @return JsonResponse
@@ -140,11 +141,9 @@ class PageAdminController extends CRUDController
             ->setLocale($request->getLocale())
             ->setTitle($request->query->get('name'));
 
-        if($page->save()) {
-            return new JsonResponse([]);
-        } else {
-            throw new \Exception();
-        }
+        $page->save();
+
+        return new JsonResponse([]);
     }
 
     /**
@@ -166,6 +165,7 @@ class PageAdminController extends CRUDController
 
         return new JsonResponse([]);
     }
+
 
     /**
      * @param Request $request
@@ -204,10 +204,8 @@ class PageAdminController extends CRUDController
             }
         }
 
-        if($page->save()) {
-            return new JsonResponse([]);
-        } else {
-            throw new \Exception();
-        }
+        $page->save();
+
+        return new JsonResponse([]);
     }
 }
