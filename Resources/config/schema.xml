@@ -17,7 +17,6 @@
 
         <behavior name="sluggable">
             <parameter name="primary_string" value="title" />
-            <parameter name="i18n_languages" value="en,ru" />
         </behavior>
 
         <behavior name="nested_set" />
