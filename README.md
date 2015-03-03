@@ -26,23 +26,23 @@ public function registerBundles()
 
 Add to `routing.yml`
 ``` yaml
-    EtfostraContentBundle:
-        resource: .
-        type: extra
+EtfostraContentBundle:
+    resource: .
+    type: extra
 ```
 
 ## Cofigure
 Edit your `config.yml`, add etfostra_content:
 ``` yaml
-    etfostra_content:
-        page_controller_name: EtfostraContentBundle:PageFront:page
-        page_template_name: EtfostraContentBundle:Front:default.html.twig
-        module_route_groups: # optional, modules (routes groups)
-            - { name: News, routes: @AcmeAppBundle/Resources/config/routing_news.yml }
-            - { name: Catalog, routes: @AcmeAppBundle/Resources/config/routing_catalog.yml }
+etfostra_content:
+    page_controller_name: EtfostraContentBundle:PageFront:page
+    page_template_name: EtfostraContentBundle:Front:default.html.twig
+    module_route_groups: # optional, modules (routes groups)
+        - { name: News, routes: @AcmeAppBundle/Resources/config/routing_news.yml }
+        - { name: Catalog, routes: @AcmeAppBundle/Resources/config/routing_catalog.yml }
 ```
 
 Debug routes
 ``` bash
-    $ php app/console debug:router
+$ php app/console debug:router
 ```
