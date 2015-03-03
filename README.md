@@ -31,6 +31,12 @@ EtfostraContentBundle:
     type: extra
 ```
 
+Build models and install assets
+``` bash
+$ php app/console propel:build
+$ php app/console assets:install --symlink
+```
+
 ## Cofigure
 Edit your `config.yml`, add etfostra_content:
 ``` yaml
