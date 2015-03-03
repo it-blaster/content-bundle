@@ -58,6 +58,11 @@
                 <target>This field generates from title</target>
             </trans-unit>
 
+            <trans-unit id="etfostra_front_page_not_found">
+                <source>etfostra_front_page_not_found</source>
+                <target>Page not found in current locale</target>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>

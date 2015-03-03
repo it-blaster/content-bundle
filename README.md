@@ -3,7 +3,7 @@
 ## Installation
 Add to `composer.json` and install
 
-```js
+``` js
 {
     "require": {
         "it-blaster/content-bundle": "dev-master"
@@ -23,8 +23,26 @@ public function registerBundles()
     );
 }
 ```
-    
-Edit your `config.yml`, add etfostra_content:
 
+Add to `routing.yml`
+``` yaml
+    EtfostraContentBundle:
+        resource: .
+        type: extra
+```
+
+## Cofigure
+Edit your `config.yml`, add etfostra_content:
+``` yaml
     etfostra_content:
-        frontend_controllers_namespace: Acme\AppBundle
+        page_controller_name: EtfostraContentBundle:PageFront:page
+        page_template_name: EtfostraContentBundle:Front:default.html.twig
+        module_route_groups: # optional, modules (routes groups)
+            - { name: News, routes: @AcmeAppBundle/Resources/config/routing_news.yml }
+            - { name: Catalog, routes: @AcmeAppBundle/Resources/config/routing_catalog.yml }
+```
+
+Debug routes
+``` bash
+    $ php app/console debug:router
+```

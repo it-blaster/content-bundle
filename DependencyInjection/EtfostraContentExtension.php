@@ -25,6 +25,8 @@ class EtfostraContentExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->setParameter('etfostra_content.frontend_controllers_namespace', $config['frontend_controllers_namespace']);
+        $container->setParameter('etfostra_content.page_controller_name', $config['page_controller_name']);
+        $container->setParameter('etfostra_content.page_template_name', $config['page_template_name']);
+        $container->setParameter('etfostra_content.module_route_groups', $config['module_route_groups']);
     }
 }

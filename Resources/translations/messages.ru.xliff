@@ -58,6 +58,11 @@
                 <target>Поле будет заполнено из названия</target>
             </trans-unit>
 
+            <trans-unit id="etfostra_front_page_not_found">
+                <source>etfostra_front_page_not_found</source>
+                <target>Страница не найдена в текущей локали</target>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>

@@ -5,10 +5,8 @@ namespace Etfostra\ContentBundle\Admin;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Bridge\Propel1\Form\Type\TranslationCollectionType;
 use Symfony\Bridge\Propel1\Form\Type\TranslationType;
-use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 
 /**
  * Class PageAdmin
@@ -21,57 +19,38 @@ class PageAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-
-
         $formMapper
-            ->with('Переводы', ['class'=>'col-lg-12'])
-                ->add('Module', 'choice', [
+            ->with('Edit', array('class'=>'col-lg-12'))
+                ->add('Module', 'choice', array(
                     'required' => false,
-                    'choices' => $this->getControllersList()
-                ])
-                ->add('Slug', null, [
+                    'choices' => $this->getModuleRouteGroups()
+                ))
+                ->add('Slug', null, array(
                     'help'  => 'etfostra_slug_hint'
-                ])
-                ->add('PageI18ns', new TranslationCollectionType(), [
+                ))
+                ->add('PageI18ns', new TranslationCollectionType(), array(
                     'label'     => false,
                     'required'  => false,
                     'type'      => new TranslationType(),
                     'languages' => $this->getConfigurationPool()->getContainer()->getParameter('locales'),
-                    'options'   => [
+                    'options'   => array(
                         'label'      => false,
                         'data_class' => 'Etfostra\ContentBundle\Model\PageI18n',
-                        'columns'    => [
-                            'Active' => [
+                        'columns'    => array(
+                            'Active' => array(
                                 'type' => 'checkbox',
-                            ],
-                            'Title' => [
+                            ),
+                            'Title' => array(
                                 'type'  => 'text',
                                 'required'  => true,
-                            ],
-                            'Content' => [
+                            ),
+                            'Content' => array(
                                 'type'  => 'ckeditor',
-                            ],
-                        ]
-                    ]
-                ])
+                            ),
+                        )
+                    )
+                ))
             ->end();
-    }
-
-    /**
-     * @param ShowMapper $showMapper
-     */
-    protected function configureShowFields(ShowMapper $showMapper)
-    {
-        $showMapper
-            ->add('Id')
-            ->add('Module')
-            ->add('CreatedAt')
-            ->add('UpdatedAt')
-            ->add('Slug')
-            ->add('TreeLeft')
-            ->add('TreeRight')
-            ->add('TreeLevel')
-        ;
     }
 
     /**
@@ -88,30 +67,46 @@ class PageAdmin extends Admin
     }
 
     /**
+     * Get array with file name and module name
+     *
      * @return array
      */
-    private function getControllersList()
+    private function getModuleRouteGroups()
     {
         $container = $this->getConfigurationPool()->getContainer();
-        $routes = $container->get('router')->getRouteCollection()->all();
-        $parser = new ControllerNameParser($container->get('kernel'));
-        $namespace_prefix = $container->getParameter('etfostra_content.frontend_controllers_namespace');
-
-        $controllers = array();
-        /* @var $route \Symfony\Component\Routing\Route */
-        foreach ($routes as $route) {
-            $controller = $route->getDefault('_controller');
-            if (0 === strpos($controller, $namespace_prefix)) {
-                try {
-                    $logicalName = $parser->build($controller);
-                    $controllers[$logicalName] = $logicalName;
-                } catch (\InvalidArgumentException $exc) {
-                    continue;
-                }
-            }
+        $route_groups_config = $container->getParameter('etfostra_content.module_route_groups');
+        $route_groups = array();
+        foreach($route_groups_config as $route_group) {
+            $route_groups[$route_group['routes']] = $route_group['name'];
         }
-        asort($controllers);
 
-        return $controllers;
+        return $route_groups;
+    }
+
+    /**
+     * @param mixed $object
+     */
+    public function postPersist($object)
+    {
+        $this->clearRouteCache();
+    }
+
+    /**
+     * @param mixed $object
+     */
+    public function postUpdate($object)
+    {
+        $this->clearRouteCache();
+    }
+
+    /**
+     * Delete all *Url* files in cache directory
+     */
+    private function clearRouteCache()
+    {
+        $app_dir = $this->getConfigurationPool()->getContainer()->get('kernel')->getRootDir();
+        if($app_dir) {
+            exec('find '.$app_dir.' -type f -name "*Url*" -delete');
+        }
     }
 }

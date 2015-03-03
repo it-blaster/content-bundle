@@ -2,6 +2,7 @@ parameters:
     etfostra_content.admin.class: Etfostra\ContentBundle\Admin\PageAdmin
     etfostra_content.model.class: Etfostra\ContentBundle\Model\Page
     etfostra_content.base_controller_name: EtfostraContentBundle:PageAdmin
+    etfostra_content.routing.class: Etfostra\ContentBundle\Routing\ContentLoader
 
 services:
     etfostra_content.admin.page:
@@ -9,3 +10,9 @@ services:
         arguments: [~, %etfostra_content.model.class%, %etfostra_content.base_controller_name%]
         tags:
             - {name: sonata.admin, manager_type: propel, group: artsofte_content_group_label, label: etfostra_content_item_label}
+
+    etfostra_content.routing_loader:
+        class: %etfostra_content.routing.class%
+        arguments: [%etfostra_content.page_controller_name%, %etfostra_content.module_route_groups%, @kernel]
+        tags:
+            - { name: routing.loader }

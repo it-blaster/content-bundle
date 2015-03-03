@@ -16,6 +16,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class PageAdminController extends CRUDController
 {
     /**
+     * Tree view page
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listAction()
@@ -24,12 +26,14 @@ class PageAdminController extends CRUDController
             throw new AccessDeniedException();
         }
 
-        return $this->render('EtfostraContentBundle:SonataAdmin:list.html.twig', [
+        return $this->render('EtfostraContentBundle:SonataAdmin:list.html.twig', array(
             'action' => 'list'
-        ]);
+        ));
     }
 
     /**
+     * JSON tree structure for jsTree
+     *
      * @param Request $request
      * @return JsonResponse
      */
@@ -56,12 +60,12 @@ class PageAdminController extends CRUDController
         $root->setLocale($request->getLocale());
 
         $buildTree = function(Page $root, &$buildTree) {
-            $array_nodes = [];
+            $array_nodes = array();
 
             /** @var Page $node */
             foreach ($root->getChildren() as $node) {
                 $node->setLocale($root->getLocale());
-                $array_node = [];
+                $array_node = array();
                 $array_node['id'] = $node->getId();
                 $array_node['text'] = $node->getTitle();
                 if($node->getModule()) {
@@ -79,17 +83,19 @@ class PageAdminController extends CRUDController
             return $array_nodes;
         };
 
-        $data_tree = [
+        $data_tree = array(
             'id' => $root->getId(),
             'text' => $root->getTitle(),
             'type' => 'root',
             'children' => $buildTree($root, $buildTree)
-        ];
+        );
 
         return new JsonResponse($data_tree);
     }
 
     /**
+     * Ajax add Page
+     *
      * @param Request $request
      * @return JsonResponse
      * @throws \Exception
@@ -113,13 +119,16 @@ class PageAdminController extends CRUDController
         $page->insertAsLastChildOf($parent);
         $page->save();
 
-        return new JsonResponse([
+        $this->clearRouteCache();
+
+        return new JsonResponse(array(
             'id' => $page->getId()
-        ]);
+        ));
     }
 
-
     /**
+     * Ajax rename Page
+     *
      * @param Request $request
      * @return JsonResponse
      * @throws \Exception
@@ -137,16 +146,24 @@ class PageAdminController extends CRUDController
             throw new \Exception();
         }
 
+        $initial_slug = $page->getSlug();
+
         $page
             ->setLocale($request->getLocale())
             ->setTitle($request->query->get('name'));
 
         $page->save();
 
-        return new JsonResponse([]);
+        if($page->getSlug() != $initial_slug) {
+            $this->clearRouteCache();
+        }
+
+        return new JsonResponse(array());
     }
 
     /**
+     * Ajax delete Page
+     *
      * @param Request $request
      * @return JsonResponse
      * @throws \Exception
@@ -163,11 +180,14 @@ class PageAdminController extends CRUDController
 
         $page->delete();
 
-        return new JsonResponse([]);
+        $this->clearRouteCache();
+
+        return new JsonResponse(array());
     }
 
-
     /**
+     * Ajax move (drag'n'drop) Page
+     *
      * @param Request $request
      * @return JsonResponse
      * @throws \Exception
@@ -206,6 +226,19 @@ class PageAdminController extends CRUDController
 
         $page->save();
 
-        return new JsonResponse([]);
+        $this->clearRouteCache();
+
+        return new JsonResponse(array());
+    }
+
+    /**
+     * Delete all *Url* files in cache directory
+     */
+    private function clearRouteCache()
+    {
+        $app_dir = $this->get('kernel')->getRootDir();
+        if($app_dir) {
+            exec('find '.$app_dir.' -type f -name "*Url*" -delete');
+        }
     }
 }

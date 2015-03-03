@@ -26,7 +26,25 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('frontend_controllers_namespace')->cannotBeEmpty()->end()
+                ->scalarNode('frontend_controllers_namespace')
+                    ->cannotBeEmpty()
+                ->end()
+                ->scalarNode('page_controller_name')
+                    ->cannotBeEmpty()
+                    ->defaultValue('EtfostraContentBundle:PageFront:page')
+                ->end()
+                ->scalarNode('page_template_name')
+                    ->cannotBeEmpty()
+                    ->defaultValue('EtfostraContentBundle:Front:default.html.twig')
+                ->end()
+                ->arrayNode('module_route_groups')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('name')->cannotBeEmpty()->end()
+                            ->scalarNode('routes')->cannotBeEmpty()->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;
