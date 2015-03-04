@@ -1,4 +1,6 @@
 # ContentBundle
+[![Build Status](https://scrutinizer-ci.com/g/it-blaster/content-bundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/it-blaster/content-bundle/build-status/master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/it-blaster/content-bundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/it-blaster/content-bundle/?branch=master)
 
 ## Installation
 Add to `composer.json` and install
