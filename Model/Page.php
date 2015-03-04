@@ -6,8 +6,4 @@ use Etfostra\ContentBundle\Model\om\BasePage;
 
 class Page extends BasePage
 {
-    public function __toString()
-    {
-        return $this->getTitle();
-    }
 }
