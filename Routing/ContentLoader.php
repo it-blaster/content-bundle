@@ -135,6 +135,12 @@ class ContentLoader extends Loader
 
                     $route_collection->addPrefix($path_str);
 
+                    /** @var Route $imported_route */
+                    foreach($route_collection as $imported_route) {
+                        $trimmed = rtrim($imported_route->getPath(), '/');
+                        $imported_route->setPath($trimmed);
+                    }
+
                     $routes->addCollection($route_collection);
                 } catch (\Exception $e) {
                     // do nothing
