@@ -25,13 +25,13 @@ class PageFrontController extends Controller
     {
         $page = PageQuery::create()->findOneById($id);
 
-        if(!$page) {
+        if (!$page) {
             throw $this->createNotFoundException($this->get('translator')->trans('etfostra_front_page_not_found'));
         }
 
         $page->setLocale($request->getLocale());
 
-        if(!$page->getActive()) {
+        if (!$page->getActive()) {
             throw $this->createNotFoundException($this->get('translator')->trans('etfostra_front_page_not_found'));
         }
 

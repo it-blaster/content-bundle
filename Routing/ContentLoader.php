@@ -104,7 +104,7 @@ class ContentLoader extends Loader
 
         $module_route_groups = $this->getModuleRouteGroups();
         $module_route_array = array();
-        foreach($module_route_groups as $v) {
+        foreach ($module_route_groups as $v) {
             $module_route_array[$v['routes']] = $v['name'];
         }
 
@@ -112,7 +112,7 @@ class ContentLoader extends Loader
         foreach ($pages->getBranch() as $page) {
             $current_page = $page;
             $path = array();
-            while($parent_page = $page->getParent()) {
+            while ($parent_page = $page->getParent()) {
                 $path[] = $page;
                 $page = $parent_page;
             }
@@ -126,7 +126,7 @@ class ContentLoader extends Loader
             }
 
             // Module (routes group)
-            if($current_page->getModule() && isset($module_route_array[$current_page->getModule()])) {
+            if ($current_page->getModule() && isset($module_route_array[$current_page->getModule()])) {
                 try {
                     /** @var RouteCollection $route_collection */
                     $route_collection = $this->import(
@@ -136,7 +136,7 @@ class ContentLoader extends Loader
                     $route_collection->addPrefix($path_str);
 
                     /** @var Route $imported_route */
-                    foreach($route_collection as $imported_route) {
+                    foreach ($route_collection as $imported_route) {
                         $trimmed = rtrim($imported_route->getPath(), '/');
                         $imported_route->setPath($trimmed);
                     }
@@ -160,7 +160,7 @@ class ContentLoader extends Loader
                 );
 
                 $routes->add(
-                    'etfostra_content_'.str_replace(array('-', '/'),'_',$path_str),
+                    'etfostra_content_'.str_replace(array('-', '/'), '_', $path_str),
                     $route
                 );
             }

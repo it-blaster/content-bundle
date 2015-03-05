@@ -76,7 +76,7 @@ class PageAdmin extends Admin
         $container = $this->getConfigurationPool()->getContainer();
         $route_groups_config = $container->getParameter('etfostra_content.module_route_groups');
         $route_groups = array();
-        foreach($route_groups_config as $route_group) {
+        foreach ($route_groups_config as $route_group) {
             $route_groups[$route_group['routes']] = $route_group['name'];
         }
 
@@ -105,7 +105,7 @@ class PageAdmin extends Admin
     private function clearRouteCache()
     {
         $app_dir = $this->getConfigurationPool()->getContainer()->get('kernel')->getRootDir();
-        if($app_dir) {
+        if ($app_dir) {
             exec('find '.$app_dir.' -type f -name "*Url*" -delete');
         }
     }

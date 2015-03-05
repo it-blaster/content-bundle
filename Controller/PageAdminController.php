@@ -43,13 +43,13 @@ class PageAdminController extends CRUDController
             throw new AccessDeniedException();
         }
 
-        if(!$request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest()) {
             throw $this->createNotFoundException();
         }
 
         $root = PageQuery::create()->findRoot();
 
-        if(!$root) {
+        if (!$root) {
             $root = new Page();
             $root->setLocale($request->getLocale());
             $root->setTitle('Home');
@@ -68,12 +68,12 @@ class PageAdminController extends CRUDController
                 $array_node = array();
                 $array_node['id'] = $node->getId();
                 $array_node['text'] = $node->getTitle();
-                if($node->getModule()) {
+                if ($node->getModule()) {
                     $array_node['type'] = 'module';
                 } else {
                     $array_node['type'] = 'default';
                 }
-                if($node->hasChildren()) {
+                if ($node->hasChildren()) {
                     $array_node['children'] = $buildTree($node, $buildTree);
                 }
 
@@ -109,7 +109,7 @@ class PageAdminController extends CRUDController
 
         $parent = PageQuery::create()->findOneById($request->query->get('parentId'));
 
-        if(!$parent) {
+        if (!$parent) {
             throw new \Exception();
         }
 
@@ -142,7 +142,7 @@ class PageAdminController extends CRUDController
 
         $page = PageQuery::create()->findOneById($request->query->get('id'));
 
-        if(!$page) {
+        if (!$page) {
             throw new \Exception();
         }
 
@@ -154,7 +154,7 @@ class PageAdminController extends CRUDController
 
         $page->save();
 
-        if($page->getSlug() != $initial_slug) {
+        if ($page->getSlug() != $initial_slug) {
             $this->clearRouteCache();
         }
 
@@ -208,16 +208,16 @@ class PageAdminController extends CRUDController
 
         $parent_page = PageQuery::create()->findOneById($parent_id);
         $parent_page->setLocale($request->getLocale());
-        if($position == 0) {
+        if ($position == 0) {
             $page->moveToFirstChildOf($parent_page);
         } else {
             $page->moveToLastChildOf($parent_page);
             $siblings = $parent_page->getChildren();
             $current_position = 0;
             /** @var Page $sibling */
-            foreach($siblings as $sibling) {
+            foreach ($siblings as $sibling) {
                 $sibling->setLocale($parent_page->getLocale());
-                if($current_position++ == $position-1) {
+                if ($current_position++ == $position-1) {
                     $page->moveToNextSiblingOf($sibling);
                     break;
                 }
@@ -237,7 +237,7 @@ class PageAdminController extends CRUDController
     private function clearRouteCache()
     {
         $app_dir = $this->get('kernel')->getRootDir();
-        if($app_dir) {
+        if ($app_dir) {
             exec('find '.$app_dir.' -type f -name "*Url*" -delete');
         }
     }
