@@ -9,7 +9,7 @@ services:
         class: %etfostra_content.admin.class%
         arguments: [~, %etfostra_content.model.class%, %etfostra_content.base_controller_name%]
         tags:
-            - {name: sonata.admin, manager_type: propel, group: artsofte_content_group_label, label: etfostra_content_item_label}
+            - {name: sonata.admin, manager_type: propel, group: admin_group_label, label: etfostra_content_item_label}
 
     etfostra_content.routing_loader:
         class: %etfostra_content.routing.class%
