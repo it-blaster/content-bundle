@@ -1,0 +1,3 @@
+project:
+    before:
+        - php -d memory_limit=2048M composer
