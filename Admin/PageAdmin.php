@@ -28,6 +28,7 @@ class PageAdmin extends Admin
                 ->add('Slug', null, array(
                     'help'  => 'etfostra_slug_hint'
                 ))
+                ->add('ShowMenu')
                 ->add('PageI18ns', new TranslationCollectionType(), array(
                     'label'     => false,
                     'required'  => false,

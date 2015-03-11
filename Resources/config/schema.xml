@@ -6,12 +6,13 @@
         xsi:noNamespaceSchemaLocation="http://xsd.propelorm.org/1.7/database.xsd"
         namespace="Etfostra\ContentBundle\Model">
 
-    <table name="page" description="Структура страниц сайта">
-        <column name="id"       type="integer" required="true" primaryKey="true" autoIncrement="true" />
-        <column name="title"    type="varchar" required="true" primaryString="true" />
-        <column name="content"  type="longvarchar" required="false" />
-        <column name="active"   type="boolean" defaultValue="true" />
-        <column name="module"   type="varchar" />
+    <table name="page" description="Site stucture">
+        <column name="id"           type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="title"        type="varchar" required="true" primaryString="true" />
+        <column name="content"      type="longvarchar" required="false" />
+        <column name="active"       type="boolean" defaultValue="true" />
+        <column name="show_menu"    type="boolean" defaultValue="true" />
+        <column name="module"       type="varchar" />
 
         <behavior name="timestampable" />
 
@@ -25,7 +26,7 @@
 
         <behavior name="i18n">
             <parameter name="i18n_columns" value="title, content, active" />
-            <parameter name="default_locale" value="ru" />
+            <parameter name="default_locale" value="en" />
         </behavior>
     </table>
 
