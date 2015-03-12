@@ -73,7 +73,7 @@ class PageFrontController extends Controller
             if ($ancestor->getRouteName()) {
                 $item['link'] = $router->generate($ancestor->getRouteName());
             }
-            if($page->getRouteName() == $ancestor->getRouteName()) {
+            if ($page->getRouteName() == $ancestor->getRouteName()) {
                 $item['active'] = true;
             }
 
@@ -84,7 +84,9 @@ class PageFrontController extends Controller
                 foreach ($siblings as $sibling) {
                     $sibling->setLocale($page->getLocale());
                     $subitem = array();
-                    if (!isset($item['siblings'])) $item['siblings'] = array();
+                    if (!isset($item['siblings'])) {
+                        $item['siblings'] = array();
+                    }
                     $subitem['title'] = $sibling->getTitle();
                     if ($sibling->getRouteName()) {
                         $subitem['link'] = $router->generate($sibling->getRouteName());
