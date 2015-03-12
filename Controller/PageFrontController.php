@@ -62,7 +62,10 @@ class PageFrontController extends Controller
         /** @var \PropelObjectCollection $ancestors */
         $ancestors = $page->getAncestors();
 
-        if(!$ancestors) return array();
+        if (!$ancestors) {
+            return array();
+        }
+
         $path = array();
 
         $ancestors->append($page);
