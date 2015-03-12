@@ -10,17 +10,50 @@
     <h1>{{ page.title }}</h1>
 
     {# Breadcrumbs #}
-    <p>
-        {% for item in breadcrumbs %}
-            {% if item.active is defined and item.active %}
-                <span>{{ item.title }}</span>
-            {% else %}
-                <a href="{{ item.link }}">{{ item.title }}</a>
-            {% endif %}
+    {% if breadcrumbs is defined and breadcrumbs %}
+        <p>
+            {% for item in breadcrumbs %}
+                {% if item.active is defined and item.active %}
+                    <span>{{ item.title }}</span>
+                {% else %}
+                    <a href="{{ item.link }}">{{ item.title }}</a>
+                {% endif %}
 
-            {% if not loop.last %}&rarr;{% endif %}
-        {% endfor %}
-    </p>
+                {% if not loop.last %}&rarr;{% endif %}
+            {% endfor %}
+        </p>
+    {% endif %}
+
+    {# Menu #}
+    {% if menu is defined and menu %}
+        <hr>
+        <ul>
+            {% for item in menu %}
+                <li>
+                    {% if item.active is defined and item.active %}
+                        <span>{{ item.title }}</span>
+                    {% else %}
+                        <a href="{{ item.link }}">{{ item.title }}</a>
+                    {% endif %}
+
+                    {# Submenu #}
+                    {% if item.children is defined and item.children %}
+                        <ul style="margin-left: 1em;">
+                            {% for subitem in item.children %}
+                                <li>
+                                    {% if subitem.active is defined and subitem.active %}
+                                        <span>{{ subitem.title }}</span>
+                                    {% else %}
+                                        <a href="{{ subitem.link }}">{{ subitem.title }}</a>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
     <hr>
 

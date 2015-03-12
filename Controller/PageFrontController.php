@@ -6,7 +6,6 @@ use Etfostra\ContentBundle\Model\Page;
 use Etfostra\ContentBundle\Model\PageQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Router;
 
 /**
@@ -42,7 +41,8 @@ class PageFrontController extends Controller
 
         return $this->render($template, array(
             'page'          => $page,
-            'breadcrumbs'   => $this->getBreadcrumbs($page, $this->get('router'))
+            'breadcrumbs'   => $this->getBreadcrumbs($page, $this->get('router')),
+            'menu'          => $this->getMenu($page, $this->get('router')),
         ));
     }
 
@@ -61,6 +61,8 @@ class PageFrontController extends Controller
     {
         /** @var \PropelObjectCollection $ancestors */
         $ancestors = $page->getAncestors();
+
+        if(!$ancestors) return array();
         $path = array();
 
         $ancestors->append($page);
@@ -103,5 +105,61 @@ class PageFrontController extends Controller
         }
 
         return $path;
+    }
+
+    /**
+     * @param Page $page
+     * @param Router $router
+     */
+    public function getMenu(Page $page, Router $router, $with_children = false)
+    {
+        $siblings = $page->getSiblings(true);
+        $menu = array();
+
+        /** @var Page $sibling */
+        foreach ($siblings as $sibling) {
+            $sibling->setLocale($page->getLocale());
+            $item = array();
+            $item['title'] = $sibling->getTitle();
+            if ($sibling->getRouteName()) {
+                $item['link'] = $router->generate($sibling->getRouteName());
+            }
+            if ($page->getRouteName() == $sibling->getRouteName()) {
+                $item['active'] = true;
+            }
+
+            if ($with_children) {
+                $item['children'] = $this->getSubMenu($sibling, $router);
+            }
+
+            $menu[] = $item;
+        }
+
+        return $menu;
+    }
+
+    /**
+     * @param Page $page
+     * @param Router $router
+     * @return array
+     */
+    public function getSubMenu(Page $page, Router $router)
+    {
+        $childrens = $page->getChildren();
+        $menu = array();
+
+        /** @var Page $children */
+        foreach ($childrens as $children) {
+            $children->setLocale($page->getLocale());
+            $item = array();
+            $item['title'] = $children->getTitle();
+            if ($children->getRouteName()) {
+                $item['link'] = $router->generate($children->getRouteName());
+            }
+
+            $menu[] = $item;
+        }
+
+        return $menu;
     }
 }
