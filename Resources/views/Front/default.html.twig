@@ -6,12 +6,30 @@
 
 {% block body %}
 
+    {# Title #}
     <h1>{{ page.title }}</h1>
+
+    {# Breadcrumbs #}
+    <p>
+        {% for item in breadcrumbs %}
+            {% if item.active is defined and item.active %}
+                <span>{{ item.title }}</span>
+            {% else %}
+                <a href="{{ item.link }}">{{ item.title }}</a>
+            {% endif %}
+
+            {% if not loop.last %}&rarr;{% endif %}
+        {% endfor %}
+    </p>
+
     <hr>
 
+    {# Content #}
     {{ page.content | raw }}
 
     <hr>
+
+    {# Last update #}
     <p>{{ page.updatedAt | date }}</p>
 
 {% endblock body %}

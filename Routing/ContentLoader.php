@@ -100,8 +100,6 @@ class ContentLoader extends Loader
 
         $pages = PageQuery::create()->findRoot();
 
-        $page_controller_name = $this->getPageControllerName();
-
         $module_route_groups = $this->getModuleRouteGroups();
         $module_route_array = array();
         foreach ($module_route_groups as $v) {
@@ -127,48 +125,84 @@ class ContentLoader extends Loader
 
             // Module (routes group)
             if ($current_page->getModule() && isset($module_route_array[$current_page->getModule()])) {
-                try {
-                    /** @var RouteCollection $route_collection */
-                    $route_collection = $this->import(
-                        $this->getKernel()->locateResource($current_page->getModule())
-                    );
-
-                    $route_collection->addPrefix($path_str);
-
-                    /** @var Route $imported_route */
-                    foreach ($route_collection as $imported_route) {
-                        $trimmed = rtrim($imported_route->getPath(), '/');
-                        $imported_route->setPath($trimmed);
-                    }
-
-                    $routes->addCollection($route_collection);
-                } catch (\Exception $e) {
-                    // do nothing
-                }
+                $this->addModuleRoutes($current_page, $path_str, $routes);
             }
             // Text page
             else {
-                $route = new Route(
-                    $path_str.'/{id}',
-                    array(
-                        '_controller' => $page_controller_name,
-                        'id' => (string) $current_page->getId()
-                    ),
-                    array(
-                        'id' => (string) $current_page->getId()
-                    )
-                );
-
-                $routes->add(
-                    'etfostra_content_'.str_replace(array('-', '/'), '_', $path_str),
-                    $route
-                );
+                $this->addPageRoute($current_page, $path_str, $routes);
             }
         }
 
         $this->loaded = true;
 
         return $routes;
+    }
+
+    /**
+     * @param Page $page
+     * @param $path_str
+     * @param RouteCollection $routes
+     */
+    private function addModuleRoutes(Page $page, $path_str, RouteCollection $routes)
+    {
+        try {
+            /** @var RouteCollection $route_collection */
+            $route_collection = $this->import(
+                $this->getKernel()->locateResource($page->getModule())
+            );
+
+            $route_name = '';
+
+            // Find possible index page for module
+            /** @var Route $imported_route */
+            foreach ($route_collection as $imported_route_name => $imported_route) {
+                $trimmed = trim($imported_route->getPath());
+                if ($trimmed == '/' || $trimmed == '') {
+                    $route_name = $imported_route_name;
+                }
+            }
+            $page->setRouteName($route_name)->save();
+
+            $route_collection->addPrefix($path_str);
+
+            /** @var Route $imported_route */
+            foreach ($route_collection as $imported_route_name => $imported_route) {
+                $trimmed = rtrim($imported_route->getPath(), '/');
+                $imported_route->setPath($trimmed);
+            }
+
+            $routes->addCollection($route_collection);
+        } catch (\Exception $e) {
+            // do nothing
+        }
+    }
+
+    /**
+     * @param Page $page
+     * @param $path_str
+     * @param RouteCollection $routes
+     */
+    private function addPageRoute(Page $page, $path_str, RouteCollection $routes)
+    {
+        $route = new Route(
+            $path_str.'/{id}',
+            array(
+                '_controller' => $this->getPageControllerName(),
+                'id' => (string) $page->getId()
+            ),
+            array(
+                'id' => (string) $page->getId()
+            )
+        );
+
+        $route_name = 'etfostra_content_'.$page->getId();
+
+        $routes->add(
+            $route_name,
+            $route
+        );
+
+        $page->setRouteName($route_name)->save();
     }
 
     /**

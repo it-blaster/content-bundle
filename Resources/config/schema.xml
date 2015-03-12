@@ -13,6 +13,7 @@
         <column name="active"       type="boolean" defaultValue="true" />
         <column name="show_menu"    type="boolean" defaultValue="true" />
         <column name="module"       type="varchar" />
+        <column name="route_name"   type="varchar" />
 
         <behavior name="timestampable" />
 
