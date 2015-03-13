@@ -25,6 +25,11 @@ class PageAdmin extends Admin
                     'required' => false,
                     'choices' => $this->getModuleRouteGroups()
                 ))
+                ->add('RouteName', null, array(
+                    'attr' => array(
+                        'readonly' => 'readonly'
+                    )
+                ))
                 ->add('Slug', null, array(
                     'help'  => 'etfostra_slug_hint'
                 ))
