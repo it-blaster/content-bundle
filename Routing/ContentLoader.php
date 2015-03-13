@@ -175,7 +175,15 @@ class ContentLoader extends Loader
             /** @var Route $imported_route */
             foreach ($route_collection as $imported_route_name => $imported_route) {
                 $trimmed = rtrim($imported_route->getPath(), '/');
-                $imported_route->setPath($trimmed);
+                $imported_route
+                    ->setPath($trimmed.'/{page_id}')
+                    ->addDefaults(array(
+                        'page_id' => (string) $page->getId()
+                    ))
+                    ->addRequirements(array(
+                        'page_id' => (string) $page->getId()
+                    ))
+                ;
             }
 
             $routes->addCollection($route_collection);
@@ -192,13 +200,13 @@ class ContentLoader extends Loader
     private function addPageRoute(Page $page, $path_str, RouteCollection $routes)
     {
         $route = new Route(
-            $path_str.'/{id}',
+            $path_str.'/{page_id}',
             array(
                 '_controller' => $this->getPageControllerName(),
-                'id' => (string) $page->getId()
+                'page_id' => (string) $page->getId()
             ),
             array(
-                'id' => (string) $page->getId()
+                'page_id' => (string) $page->getId()
             )
         );
 

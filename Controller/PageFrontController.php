@@ -20,23 +20,12 @@ class PageFrontController extends Controller
     /**
      * Default Page render action
      *
-     * @param Request $request
-     * @param integer $id
+     * @param integer $page_id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function pageAction(Request $request, $id)
+    public function pageAction($page_id)
     {
-        $page = PageQuery::create()->findOneById($id);
-
-        if (!$page) {
-            throw $this->createNotFoundException($this->get('translator')->trans('etfostra_front_page_not_found'));
-        }
-
-        $page->setLocale($request->getLocale());
-
-        if (!$page->getActive()) {
-            throw $this->createNotFoundException($this->get('translator')->trans('etfostra_front_page_not_found'));
-        }
+        $page = $this->getPageById($page_id);
 
         $template = $this->container->getParameter('etfostra_content.page_template_name');
 
@@ -270,5 +259,28 @@ class PageFrontController extends Controller
         $c->add(PagePeer::SHOW_MENU, true);
 
         return $c;
+    }
+
+    /**
+     * Get page by id, if page not found or inactive thow exception
+     *
+     * @param $page_id
+     * @return Page
+     */
+    protected function getPageById($page_id)
+    {
+        $page = PageQuery::create()->findOneById($page_id);
+
+        if (!$page) {
+            throw $this->createNotFoundException($this->get('translator')->trans('etfostra_front_page_not_found'));
+        }
+
+        $page->setLocale($this->get('request')->getLocale());
+
+        if (!$page->getActive()) {
+            throw $this->createNotFoundException($this->get('translator')->trans('etfostra_front_page_not_found'));
+        }
+
+        return $page;
     }
 }
