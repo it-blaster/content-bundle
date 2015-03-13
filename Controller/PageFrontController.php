@@ -183,6 +183,8 @@ class PageFrontController extends Controller
     {
         $page = PageQuery::create()->findRoot();
 
+        $page->setLocale($this->get('request')->getLocale());
+
         $menu = $this->getSubMenu($page, $router, $with_children);
 
         if ($with_children) {
