@@ -42,7 +42,7 @@ class PageFrontController extends Controller
         return $this->render($template, array(
             'page'          => $page,
             'breadcrumbs'   => $this->getBreadcrumbs($page, $this->get('router')),
-            'mainmenu'      => $this->getMainMenu($this->get('router')),
+            'mainmenu'      => $this->getMainMenu($this->get('router'), true),
             'menu'          => $this->getMenu($page, $this->get('router'), true),
             'submenu'       => $this->getSubMenu($page, $this->get('router')),
         ));
@@ -75,10 +75,12 @@ class PageFrontController extends Controller
         /** @var Page $ancestor */
         foreach ($ancestors as $ancestor) {
             $ancestor->setLocale($page->getLocale());
-            $item = array();
-            $item['title'] = $ancestor->getTitle();
-            $item['link'] = $this->generatePageLink($ancestor, $router);
-            $item['active'] = $this->isPageActive($ancestor);
+            $item = array(
+                'page' => $ancestor,
+                'title' => $ancestor->getTitle(),
+                'link' => $this->generatePageLink($ancestor, $router),
+                'active' => $this->isPageActive($ancestor),
+            );
 
             // Siblings
             if ($with_siblings) {
@@ -86,13 +88,15 @@ class PageFrontController extends Controller
                 /** @var Page $sibling */
                 foreach ($siblings as $sibling) {
                     $sibling->setLocale($page->getLocale());
-                    $subitem = array();
                     if (!isset($item['siblings'])) {
                         $item['siblings'] = array();
                     }
-                    $subitem['title'] = $sibling->getTitle();
-                    $subitem['link'] = $this->generatePageLink($sibling, $router);
-                    $subitem['active'] = $this->isPageActive($sibling);
+                    $subitem = array(
+                        'page'      => $sibling,
+                        'title'     => $sibling->getTitle(),
+                        'link'      => $this->generatePageLink($sibling, $router),
+                        'active'    => $this->isPageActive($sibling),
+                    );
 
                     $item['siblings'][] = $subitem;
                 }
@@ -120,17 +124,17 @@ class PageFrontController extends Controller
         /** @var Page $sibling */
         foreach ($siblings as $sibling) {
             $sibling->setLocale($page->getLocale());
-            $item = array();
-            $item['title'] = $sibling->getTitle();
-            $item['link'] = $this->generatePageLink($sibling, $router);
-            $item['active'] = $this->isPageActive($sibling);
+            $item = array(
+                'page'      => $sibling,
+                'title'     => $sibling->getTitle(),
+                'link'      => $this->generatePageLink($sibling, $router),
+                'active'    => $this->isPageActive($sibling),
+                'subactive' => $this->isPageSubActive($sibling),
+            );
 
             if ($with_children) {
                 $item['children'] = $this->getSubMenu($sibling, $router);
             }
-
-            // Is any of child active?
-            $item['subactive'] = $this->isPageSubActive($sibling);
 
             $menu[] = $item;
         }
@@ -148,19 +152,18 @@ class PageFrontController extends Controller
     public function getSubMenu(Page $page, Router $router)
     {
         $childrens = $page->getChildren();
-        $current_route = $this->container->get('request')->get('_route');
         $menu = array();
 
         /** @var Page $children */
         foreach ($childrens as $children) {
             $children->setLocale($page->getLocale());
-            $item = array();
-            $item['title'] = $children->getTitle();
-            $item['link'] = $this->generatePageLink($children, $router);
-            $item['active'] = $this->isPageActive($children);
-
-            // Is any of child active?
-            $item['subactive'] = $this->isPageSubActive($children);
+            $item = array(
+                'page'      => $children,
+                'title'     => $children->getTitle(),
+                'link'      => $this->generatePageLink($children, $router),
+                'active'    => $this->isPageActive($children),
+                'subactive' => $this->isPageSubActive($children),
+            );
 
             $menu[] = $item;
         }
@@ -169,6 +172,8 @@ class PageFrontController extends Controller
     }
 
     /**
+     * Return array of root children for main menu generation
+     *
      * @param Router $router
      * @param bool $with_children
      * @return array
@@ -177,10 +182,22 @@ class PageFrontController extends Controller
     {
         $page = PageQuery::create()->findRoot();
 
-        return $this->getSubMenu($page, $router, $with_children);
+        $menu = $this->getSubMenu($page, $router, $with_children);
+
+        if ($with_children) {
+            foreach ($menu as $k=>$item) {
+                if ($with_children) {
+                    $menu[$k]['children'] = $this->getSubMenu($item['page'], $router);
+                }
+            }
+        }
+
+        return $menu;
     }
 
     /**
+     * Generates link for page
+     *
      * @param Page $page
      * @param Router $router
      * @return null|string
@@ -197,6 +214,8 @@ class PageFrontController extends Controller
     }
 
     /**
+     * Is current route match page
+     *
      * @param Page $page
      * @return bool
      */
@@ -213,6 +232,8 @@ class PageFrontController extends Controller
     }
 
     /**
+     * Is current route match any child of page
+     *
      * @param Page $page
      * @return bool
      */

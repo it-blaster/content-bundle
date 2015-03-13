@@ -98,7 +98,14 @@ class ContentLoader extends Loader
 
         $routes = new RouteCollection();
 
-        $pages = PageQuery::create()->findRoot();
+        $root = PageQuery::create()->findRoot();
+
+        if (!$root) {
+            $root = new Page();
+            $root->setTitle('Home');
+            $root->makeRoot();
+            $root->save();
+        }
 
         $module_route_groups = $this->getModuleRouteGroups();
         $module_route_array = array();
@@ -107,7 +114,7 @@ class ContentLoader extends Loader
         }
 
         /** @var Page $page */
-        foreach ($pages->getBranch() as $page) {
+        foreach ($root->getBranch() as $page) {
             $current_page = $page;
             $path = array();
             while ($parent_page = $page->getParent()) {

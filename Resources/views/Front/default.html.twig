@@ -11,17 +11,32 @@
         <h2>Main menu</h2>
         <p>
             {% for item in mainmenu %}
-                {% if item.active is defined and item.active %}
-                    <span>{{ item.title }}</span>
-                {% else %}
-                    {% if item.subactive %}
-                        <strong><a href="{{ item.link }}">{{ item.title }}</a></strong>
+                <div style="display: inline-block; vertical-align: top;">
+                    {% if item.active is defined and item.active %}
+                        <span>{{ item.title }}</span>
                     {% else %}
-                        <a href="{{ item.link }}">{{ item.title }}</a>
+                        {% if item.subactive %}
+                            <strong><a href="{{ item.link }}">{{ item.title }}</a></strong>
+                        {% else %}
+                            <a href="{{ item.link }}">{{ item.title }}</a>
+                        {% endif %}
                     {% endif %}
-                {% endif %}
 
-                {% if not loop.last %} | {% endif %}
+                    {% if not loop.last %} | {% endif %}
+
+                    {# Submenu #}
+                    {% if item.children is defined and item.children %}
+                        <br>
+                        {% for subitem in item.children %}
+                            <br>
+                            {% if subitem.active is defined and subitem.active %}
+                                <span>{{ subitem.title }}</span>
+                            {% else %}
+                                <a href="{{ subitem.link }}">{{ subitem.title }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
             {% endfor %}
         </p>
     {% endif %}
