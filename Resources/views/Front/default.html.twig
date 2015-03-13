@@ -6,11 +6,30 @@
 
 {% block body %}
 
-    {# Title #}
-    <h1>{{ page.title }}</h1>
+    {# Mainmenu from root #}
+    {% if mainmenu is defined and mainmenu %}
+        <h2>Main menu</h2>
+        <p>
+            {% for item in mainmenu %}
+                {% if item.active is defined and item.active %}
+                    <span>{{ item.title }}</span>
+                {% else %}
+                    {% if item.subactive %}
+                        <strong><a href="{{ item.link }}">{{ item.title }}</a></strong>
+                    {% else %}
+                        <a href="{{ item.link }}">{{ item.title }}</a>
+                    {% endif %}
+                {% endif %}
+
+                {% if not loop.last %} | {% endif %}
+            {% endfor %}
+        </p>
+    {% endif %}
+
 
     {# Breadcrumbs #}
     {% if breadcrumbs is defined and breadcrumbs %}
+        <h2>Breadcrumbs</h2>
         <p>
             {% for item in breadcrumbs %}
                 {% if item.active is defined and item.active %}
@@ -24,9 +43,11 @@
         </p>
     {% endif %}
 
-    {# Menu #}
+
+    {# Menu of siblings #}
     {% if menu is defined and menu %}
         <hr>
+        <h2>Menu of siblings</h2>
         <ul>
             {% for item in menu %}
                 <li>
@@ -55,7 +76,29 @@
         </ul>
     {% endif %}
 
+
+    {# Submenu of children #}
+    {% if submenu is defined and submenu %}
+        <hr>
+        <h2>Submenu of children</h2>
+        <ul>
+            {% for item in submenu %}
+                <li>
+                    {% if item.active is defined and item.active %}
+                        <span>{{ item.title }}</span>
+                    {% else %}
+                        <a href="{{ item.link }}">{{ item.title }}</a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
     <hr>
+
+    {# Title #}
+    <h1>Page title — {{ page.title }}</h1>
 
     {# Content #}
     {{ page.content | raw }}

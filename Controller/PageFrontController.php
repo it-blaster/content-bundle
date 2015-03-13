@@ -42,7 +42,9 @@ class PageFrontController extends Controller
         return $this->render($template, array(
             'page'          => $page,
             'breadcrumbs'   => $this->getBreadcrumbs($page, $this->get('router')),
-            'menu'          => $this->getMenu($page, $this->get('router')),
+            'mainmenu'      => $this->getMainMenu($this->get('router')),
+            'menu'          => $this->getMenu($page, $this->get('router'), true),
+            'submenu'       => $this->getSubMenu($page, $this->get('router')),
         ));
     }
 
@@ -75,12 +77,8 @@ class PageFrontController extends Controller
             $ancestor->setLocale($page->getLocale());
             $item = array();
             $item['title'] = $ancestor->getTitle();
-            if ($ancestor->getRouteName()) {
-                $item['link'] = $router->generate($ancestor->getRouteName());
-            }
-            if ($page->getRouteName() == $ancestor->getRouteName()) {
-                $item['active'] = true;
-            }
+            $item['link'] = $this->generatePageLink($ancestor, $router);
+            $item['active'] = $this->isPageActive($ancestor);
 
             // Siblings
             if ($with_siblings) {
@@ -93,12 +91,8 @@ class PageFrontController extends Controller
                         $item['siblings'] = array();
                     }
                     $subitem['title'] = $sibling->getTitle();
-                    if ($sibling->getRouteName()) {
-                        $subitem['link'] = $router->generate($sibling->getRouteName());
-                    }
-                    if ($page->getRouteName() == $sibling->getRouteName()) {
-                        $subitem['active'] = true;
-                    }
+                    $subitem['link'] = $this->generatePageLink($sibling, $router);
+                    $subitem['active'] = $this->isPageActive($sibling);
 
                     $item['siblings'][] = $subitem;
                 }
@@ -111,8 +105,12 @@ class PageFrontController extends Controller
     }
 
     /**
+     * Return array of siblings for menu generation
+     *
      * @param Page $page
      * @param Router $router
+     * @param bool $with_children
+     * @return array
      */
     public function getMenu(Page $page, Router $router, $with_children = false)
     {
@@ -124,16 +122,15 @@ class PageFrontController extends Controller
             $sibling->setLocale($page->getLocale());
             $item = array();
             $item['title'] = $sibling->getTitle();
-            if ($sibling->getRouteName()) {
-                $item['link'] = $router->generate($sibling->getRouteName());
-            }
-            if ($page->getRouteName() == $sibling->getRouteName()) {
-                $item['active'] = true;
-            }
+            $item['link'] = $this->generatePageLink($sibling, $router);
+            $item['active'] = $this->isPageActive($sibling);
 
             if ($with_children) {
                 $item['children'] = $this->getSubMenu($sibling, $router);
             }
+
+            // Is any of child active?
+            $item['subactive'] = $this->isPageSubActive($sibling);
 
             $menu[] = $item;
         }
@@ -142,6 +139,8 @@ class PageFrontController extends Controller
     }
 
     /**
+     * Return array of siblings for menu generation
+     *
      * @param Page $page
      * @param Router $router
      * @return array
@@ -149,6 +148,7 @@ class PageFrontController extends Controller
     public function getSubMenu(Page $page, Router $router)
     {
         $childrens = $page->getChildren();
+        $current_route = $this->container->get('request')->get('_route');
         $menu = array();
 
         /** @var Page $children */
@@ -156,13 +156,84 @@ class PageFrontController extends Controller
             $children->setLocale($page->getLocale());
             $item = array();
             $item['title'] = $children->getTitle();
-            if ($children->getRouteName()) {
-                $item['link'] = $router->generate($children->getRouteName());
-            }
+            $item['link'] = $this->generatePageLink($children, $router);
+            $item['active'] = $this->isPageActive($children);
+
+            // Is any of child active?
+            $item['subactive'] = $this->isPageSubActive($children);
 
             $menu[] = $item;
         }
 
         return $menu;
+    }
+
+    /**
+     * @param Router $router
+     * @param bool $with_children
+     * @return array
+     */
+    public function getMainMenu(Router $router, $with_children = false)
+    {
+        $page = PageQuery::create()->findRoot();
+
+        return $this->getSubMenu($page, $router, $with_children);
+    }
+
+    /**
+     * @param Page $page
+     * @param Router $router
+     * @return null|string
+     */
+    private function generatePageLink(Page $page, Router $router)
+    {
+        $route_name = $page->getRouteName();
+
+        if ($route_name) {
+            return $router->generate($route_name);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @param Page $page
+     * @return bool
+     */
+    private function isPageActive(Page $page)
+    {
+        $page_route_name = $page->getRouteName();
+        $current_route_name = $this->get('request')->get('_route');
+
+        if ($page_route_name == $current_route_name) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param Page $page
+     * @return bool
+     */
+    private function isPageSubActive(Page $page)
+    {
+        $current_route_name = $this->get('request')->get('_route');
+
+        if ($page->getRouteName() == $current_route_name) {
+            return false;
+        }
+
+        $possible_child = PageQuery::create()->findOneByRouteName($current_route_name);
+
+        if (!$possible_child) {
+            return false;
+        }
+
+        if ($page->isAncestorOf($possible_child)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
