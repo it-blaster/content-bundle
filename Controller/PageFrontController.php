@@ -3,6 +3,7 @@
 namespace Etfostra\ContentBundle\Controller;
 
 use Etfostra\ContentBundle\Model\Page;
+use Etfostra\ContentBundle\Model\PagePeer;
 use Etfostra\ContentBundle\Model\PageQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -118,7 +119,7 @@ class PageFrontController extends Controller
      */
     public function getMenu(Page $page, Router $router, $with_children = false)
     {
-        $siblings = $page->getSiblings(true);
+        $siblings = $page->getSiblings(true, $this->getShowMenuCriteria());
         $menu = array();
 
         /** @var Page $sibling */
@@ -151,7 +152,7 @@ class PageFrontController extends Controller
      */
     public function getSubMenu(Page $page, Router $router)
     {
-        $childrens = $page->getChildren();
+        $childrens = $page->getChildren($this->getShowMenuCriteria());
         $menu = array();
 
         /** @var Page $children */
@@ -256,5 +257,16 @@ class PageFrontController extends Controller
         } else {
             return false;
         }
+    }
+
+    /**
+     * @return \Criteria
+     */
+    private function getShowMenuCriteria()
+    {
+        $c = new \Criteria();
+        $c->add(PagePeer::SHOW_MENU, true);
+
+        return $c;
     }
 }
