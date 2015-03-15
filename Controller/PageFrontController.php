@@ -174,7 +174,7 @@ class PageFrontController extends Controller
 
         $page->setLocale($this->get('request')->getLocale());
 
-        $menu = $this->getSubMenu($page, $router, $with_children);
+        $menu = $this->getSubMenu($page, $router);
 
         if ($with_children) {
             foreach ($menu as $k=>$item) {
