@@ -16,3 +16,9 @@ services:
         arguments: [%etfostra_content.page_controller_name%, %etfostra_content.module_route_groups%, @kernel]
         tags:
             - { name: routing.loader }
+
+    etfostra_content.twig_extension:
+        class: Etfostra\ContentBundle\Twig\EtfostraContentExtension
+        arguments: [@router]
+        tags:
+            - { name: twig.extension }

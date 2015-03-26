@@ -55,3 +55,9 @@ Debug routes
 ``` bash
 $ php app/console debug:router
 ```
+
+Additional function to twig:
+``` twig
+page_path('etfostra_content_56')
+```
+This function generates link to page by "Route Name", you can copy it from Page edit form. Function prevent exception when route not found.
