@@ -1,6 +1,7 @@
 <?php
 namespace Etfostra\ContentBundle\Twig;
 
+use Etfostra\ContentBundle\Model\PageQuery;
 use Symfony\Component\Routing\Router;
 
 /**
@@ -29,11 +30,12 @@ class EtfostraContentExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFunction('page_path', array($this, 'pageLinkFunction')),
+            new \Twig_SimpleFunction('page_path_by_slug', array($this, 'pageSlugLinkFunction')),
         );
     }
 
     /**
-     * @param $route_name
+     * @param string $route_name
      * @return string
      */
     public function pageLinkFunction($route_name)
@@ -45,6 +47,21 @@ class EtfostraContentExtension extends \Twig_Extension
         }
 
         return $link;
+    }
+
+    /**
+     * @param string $slug
+     * @return string
+     */
+    public function pageSlugLinkFunction($slug)
+    {
+        $page = PageQuery::create()->findOneBySlug($slug);
+
+        if ($page) {
+            return $this->pageLinkFunction($page->getRouteName());
+        } else {
+            return '';
+        }
     }
 
     /**

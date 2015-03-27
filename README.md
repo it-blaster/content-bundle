@@ -56,8 +56,16 @@ Debug routes
 $ php app/console debug:router
 ```
 
-Additional function to twig:
+### Twig functions
+Getting link by route name:
 ``` twig
 {{ page_path('etfostra_content_56') }}
 ```
-This function generates link to page by "Route Name", you can copy it from Page edit form. Function prevent exception when route not found.
+This function return link to page by "Route Name", you can copy it from Page edit form. Function prevent exception when route not found.
+
+Getting link by slug:
+``` twig
+{{ page_path_by_slug('any-page-slug') }}
+```
+**Generates extra query!**
+This function return link to page by Slug, you can edit and copy it on Page edit form. Function prevent exception when route not found.
