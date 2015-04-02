@@ -255,10 +255,13 @@ class PageFrontController extends Controller
      */
     private function getShowMenuCriteria()
     {
-        $c = new \Criteria();
-        $c->add(PagePeer::SHOW_MENU, true);
+        $q = PageQuery::create()
+            ->filterByShowMenu(true)
+            ->useI18nQuery($this->get('request')->getLocale())
+                ->filterByActive(true)
+            ->endUse();
 
-        return $c;
+        return $q;
     }
 
     /**
