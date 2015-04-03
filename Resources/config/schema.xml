@@ -14,6 +14,7 @@
         <column name="show_menu"    type="boolean" defaultValue="true" />
         <column name="module"       type="varchar" />
         <column name="route_name"   type="varchar" />
+        <column name="redirect"     type="varchar" />
 
         <behavior name="timestampable" />
 
