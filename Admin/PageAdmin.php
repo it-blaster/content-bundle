@@ -33,9 +33,6 @@ class PageAdmin extends Admin
                 ->add('Slug', null, array(
                     'help'  => 'etfostra_slug_hint'
                 ))
-                ->add('Redirect', null, array(
-                    'help'  => 'etfostra_redirect_hint'
-                ))
                 ->add('ShowMenu')
                 ->add('PageI18ns', new TranslationCollectionType(), array(
                     'label'     => false,
@@ -48,6 +45,10 @@ class PageAdmin extends Admin
                         'columns'    => array(
                             'Active' => array(
                                 'type' => 'checkbox',
+                            ),
+                            'Redirect' => array(
+                                'type' => 'text',
+                                'help'  => 'etfostra_redirect_hint',
                             ),
                             'Title' => array(
                                 'type'  => 'text',

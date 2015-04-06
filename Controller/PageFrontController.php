@@ -3,7 +3,6 @@
 namespace Etfostra\ContentBundle\Controller;
 
 use Etfostra\ContentBundle\Model\Page;
-use Etfostra\ContentBundle\Model\PagePeer;
 use Etfostra\ContentBundle\Model\PageQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,12 +19,20 @@ class PageFrontController extends Controller
     /**
      * Default Page render action
      *
+     * @param Request $request
      * @param integer $page_id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function pageAction($page_id)
+    public function pageAction(Request $request, $page_id)
     {
         $page = $this->getPageById($page_id);
+
+        if ($page->getRedirect()) {
+            return $this->forward('EtfostraContentBundle:PageFront:redirect', array(
+                'request'   => $request,
+                'page'      => $page,
+            ));
+        }
 
         $template = $this->container->getParameter('etfostra_content.page_template_name');
 
@@ -39,7 +46,25 @@ class PageFrontController extends Controller
     }
 
     /**
-     * Retrun array for breadcrumbs generation
+     * Redirect action for redirect type Page
+     *
+     * @param Request $request
+     * @param Page $page
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function redirectAction(Request $request, Page $page)
+    {
+        $path = $page->getRedirect();
+
+        return $this->forward('FrameworkBundle:Redirect:urlRedirect', array(
+            'request'   => $request,
+            'path'      => $path,
+            'permanent' => true,
+        ));
+    }
+
+    /**
+     * Return array for breadcrumbs generation
      * array(
      *     array(title, link, [active], [siblings]),
      * )

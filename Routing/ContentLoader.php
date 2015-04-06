@@ -134,10 +134,6 @@ class ContentLoader extends Loader
             if ($current_page->getModule() && isset($module_route_array[$current_page->getModule()])) {
                 $this->addModuleRoutes($current_page, $path_str, $routes);
             }
-            // Redirect
-            elseif ($current_page->getRedirect()) {
-                $this->addRedirectRoute($current_page, $path_str, $routes);
-            }
             // Text page
             else {
                 $this->addPageRoute($current_page, $path_str, $routes);
@@ -194,34 +190,6 @@ class ContentLoader extends Loader
         } catch (\Exception $e) {
             // do nothing
         }
-    }
-
-    /**
-     * @param Page $page
-     * @param $path_str
-     * @param RouteCollection $routes
-     * @throws \Exception
-     * @throws \PropelException
-     */
-    private function addRedirectRoute(Page $page, $path_str, RouteCollection $routes)
-    {
-        $route = new Route(
-            $path_str,
-            array(
-                '_controller'   => 'FrameworkBundle:Redirect:urlRedirect',
-                'path'          => (string) $page->getRedirect(),
-                'permanent'     => true,
-            )
-        );
-
-        $route_name = 'etfostra_content_'.$page->getId();
-
-        $routes->add(
-            $route_name,
-            $route
-        );
-
-        $page->setRouteName($route_name)->save();
     }
 
     /**
