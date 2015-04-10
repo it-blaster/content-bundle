@@ -219,7 +219,7 @@ class PageFrontController extends Controller
      * @param Router $router
      * @return null|string
      */
-    private function generatePageLink(Page $page, Router $router)
+    protected function generatePageLink(Page $page, Router $router)
     {
         $route_name = $page->getRouteName();
 
@@ -236,7 +236,7 @@ class PageFrontController extends Controller
      * @param Page $page
      * @return bool
      */
-    private function isPageActive(Page $page)
+    protected function isPageActive(Page $page)
     {
         $page_route_name = $page->getRouteName();
         $current_route_name = $this->get('request')->get('_route');
@@ -254,7 +254,7 @@ class PageFrontController extends Controller
      * @param Page $page
      * @return bool
      */
-    private function isPageSubActive(Page $page)
+    protected function isPageSubActive(Page $page)
     {
         $current_route_name = $this->get('request')->get('_route');
 
@@ -278,7 +278,7 @@ class PageFrontController extends Controller
     /**
      * @return \Criteria
      */
-    private function getShowMenuCriteria()
+    protected function getShowMenuCriteria()
     {
         $q = PageQuery::create()
             ->filterByShowMenu(true)
