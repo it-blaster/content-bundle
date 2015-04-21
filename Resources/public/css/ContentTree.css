@@ -8,3 +8,7 @@
 .jstree-default .jstree-search {
     color: #000000;
 }
+
+#ContentTree {
+    overflow: auto;
+}

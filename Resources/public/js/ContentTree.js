@@ -2,6 +2,8 @@ $(function(){
 
     var $ContentTree = $('#ContentTree');
 
+    $ContentTree.height($('body').height() - $ContentTree.offset().top);
+
     $ContentTree
         .on('create_node.jstree', function(e, data){
             var node = $.extend(true, {}, data.node);
@@ -62,6 +64,18 @@ $(function(){
                     alert($ContentTree.data('moveError'));
                 }
             });
+        })
+        .on('search.jstree', function(e, data){
+            var $result = $(this).find('.jstree-search:eq(0)');
+            if ($result.length > 0) {
+                $result[0].scrollIntoView();
+            }
+        })
+        .on('dblclick.jstree', function(event){
+            var $node = $(event.target).closest("li");
+            if ($node.hasClass('jstree-leaf')) {
+                $('#EditContentTree').trigger('click');
+            }
         });
 
     $ContentTree.jstree({
@@ -99,6 +113,36 @@ $(function(){
                 "valid_children" : []
             }
         },
+        "contextmenu" : {
+            "items": function($node) {
+                return {
+                    "Create": {
+                        "separator_before": false,
+                        "separator_after": false,
+                        "label": $('#AddContentTree').text().trim(),
+                        "action": function () {
+                            $('#AddContentTree').trigger('click');
+                        }
+                    },
+                    "Rename": {
+                        "separator_before": false,
+                        "separator_after": false,
+                        "label": $('#EditContentTree').text().trim(),
+                        "action": function () {
+                            $('#EditContentTree').trigger('click');
+                        }
+                    },
+                    "Remove": {
+                        "separator_before": false,
+                        "separator_after": false,
+                        "label": $('#DeleteContentTree').text().trim(),
+                        "action": function () {
+                            $('#DeleteContentTree').trigger('click');
+                        }
+                    }
+                };
+            }
+        },
         "plugins": [ "wholerow", "dnd", "search", "state", "contextmenu", "types" ]
     });
 
@@ -117,7 +161,7 @@ $(function(){
             sel = ref.get_selected();
         if(!sel.length) { return false; }
         sel = sel[0];
-        sel = ref.create_node(sel, { "type": "default" });
+        sel = ref.create_node(sel, { "type": "default" }, 'first');
         if(sel) {
             ref.edit(sel);
         }
