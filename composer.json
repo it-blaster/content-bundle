@@ -16,7 +16,7 @@
         "propel/propel-bundle": ">=1.0",
         "sonata-project/propel-admin-bundle": ">=1.0",
         "egeloen/ckeditor-bundle": ">=2.0",
-        "it-blaster/translation-bundle": "dev-master"
+        "it-blaster/translation-bundle": ">=1.0.0"
     },
     "autoload": {
         "psr-0": { "Etfostra\\ContentBundle": "" }
