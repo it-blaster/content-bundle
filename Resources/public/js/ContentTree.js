@@ -85,7 +85,10 @@ $(function(){
             },
             "check_callback": function (op, node, par, pos, more) {
                 if(op === "delete_node") {
-                    return confirm($ContentTree.data('deleteConfirm'));
+                    return confirm(
+                        $ContentTree.data('deleteConfirm')
+                            .replace("%object%", node.text)
+                    );
                 }
             },
             "state": {

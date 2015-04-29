@@ -3,11 +3,6 @@
     <file source-language="en" datatype="plaintext" original="">
         <body>
 
-            <trans-unit id="etfostra_content_item_label">
-                <source>etfostra_content_item_label</source>
-                <target>Страницы</target>
-            </trans-unit>
-
             <trans-unit id="etfostra_search_label">
                 <source>etfostra_search_label</source>
                 <target>Поиск</target>
@@ -46,16 +41,6 @@
             <trans-unit id="etfostra_move_error">
                 <source>etfostra_move_error</source>
                 <target>Ошибка при перемещении записи</target>
-            </trans-unit>
-
-            <trans-unit id="etfostra_page_list_label">
-                <source>Page List</source>
-                <target>Список страниц</target>
-            </trans-unit>
-
-            <trans-unit id="etfostra_slug_hint">
-                <source>etfostra_slug_hint</source>
-                <target>Поле будет заполнено из названия</target>
             </trans-unit>
 
             <trans-unit id="etfostra_redirect_hint">

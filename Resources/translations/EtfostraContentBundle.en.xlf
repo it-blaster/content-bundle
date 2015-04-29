@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="">
+        <body>
+
+            <trans-unit id="etfostra_content_item_label">
+                <source>etfostra_content_item_label</source>
+                <target>Pages</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_slug_hint">
+                <source>etfostra_slug_hint</source>
+                <target>This field generates from title</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_page_list_label">
+                <source>Page List</source>
+                <target>Pages List</target>
+            </trans-unit>
+
+        </body>
+    </file>
+</xliff>

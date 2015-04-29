@@ -14,13 +14,30 @@ use Symfony\Bridge\Propel1\Form\Type\TranslationType;
  */
 class PageAdmin extends Admin
 {
+    protected $translationDomain = 'EtfostraContentBundle';
+
     /**
      * @param FormMapper $formMapper
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $container = $this->getConfigurationPool()->getContainer();
+        if ($container->hasParameter('locales')) {
+            $locales = $container->getParameter('locales');
+        } else {
+            $locales = array($container->getParameter('locale'));
+        }
+
+        if ($container->has('form.type.ckfinder')) {
+            $textAreaType = 'ckfinder';
+        } elseif ($container->has('ivory_ck_editor.form.type')) {
+            $textAreaType = 'ckeditor';
+        } else {
+            $textAreaType = 'textarea';
+        }
+
         $formMapper
-            ->with('Edit', array('class'=>'col-lg-12'))
+            ->with('Edit', array('class' => 'col-lg-12'))
                 ->add('Module', 'choice', array(
                     'required' => false,
                     'choices' => $this->getModuleRouteGroups()
@@ -38,7 +55,7 @@ class PageAdmin extends Admin
                     'label'     => false,
                     'required'  => false,
                     'type'      => new TranslationType(),
-                    'languages' => $this->getConfigurationPool()->getContainer()->getParameter('locales'),
+                    'languages' => $locales,
                     'options'   => array(
                         'label'      => false,
                         'data_class' => 'Etfostra\ContentBundle\Model\PageI18n',
@@ -55,7 +72,7 @@ class PageAdmin extends Admin
                                 'required'  => true,
                             ),
                             'Content' => array(
-                                'type'  => 'ckeditor',
+                                'type'  => $textAreaType,
                             ),
                         )
                     )
