@@ -34,10 +34,18 @@ EtfostraContentBundle:
     type: extra
 ```
 
-Build models and install assets
+Build models, run SQL and install assets
 ``` bash
-$ php app/console propel:build
-$ php app/console assets:install --symlink
+$ php app/console propel:model:build
+$ php app/console propel:migration:generate-diff
+$ php app/console propel:migration:migrate
+$ php app/console assets:install
+```
+
+To enable labels translation in SonataAdmin
+``` yaml
+framework:
+    translator:      { fallbacks: ["%locale%"] }
 ```
 
 ## Cofigure

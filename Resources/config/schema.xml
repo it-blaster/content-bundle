@@ -20,6 +20,7 @@
 
         <behavior name="sluggable">
             <parameter name="primary_string" value="title" />
+            <parameter name="permanent" value="true" />
         </behavior>
 
         <behavior name="nested_set" />
