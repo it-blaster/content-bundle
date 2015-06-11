@@ -127,6 +127,14 @@ class PageAdmin extends Admin
     }
 
     /**
+     * @param mixed $object
+     */
+    public function postRemove($object)
+    {
+        $this->clearRouteCache();
+    }
+
+    /**
      * Delete all *Url* files in cache directory
      */
     private function clearRouteCache()
