@@ -22,7 +22,7 @@
     </div>
 
     <div class="row">
-        <div class="sonata-ba-list col-md-10">
+        <div class="sonata-ba-list col-md-9">
 
             <div
                     id="ContentTree"
@@ -32,6 +32,7 @@
                     data-delete="{{ path('admin_etfostra_content_page_ajaxDelete') }}"
                     data-delete-confirm="{{ 'message_delete_confirmation'|trans({}, 'SonataAdminBundle') }}"
                     data-move="{{ path('admin_etfostra_content_page_ajaxMove') }}"
+                    data-details="{{ path('admin_etfostra_content_page_ajaxDetails') }}"
 
                     data-add-error="{{ 'etfostra_add_error'|trans }}"
                     data-rename-error="{{ 'etfostra_rename_error'|trans }}"
@@ -42,6 +43,11 @@
             </div>
 
         </div>
+
+        <div class="col-md-3">
+            <div id="ContentNodeDetailsPanel"></div>
+        </div>
+
     </div>
 
 {% endblock %}

@@ -44,7 +44,9 @@ $(function(){
                     "id": data.node.id
                 },
                 dataType: 'json',
-                success: function (result) {},
+                success: function (result) {
+                    showNodeDetails();
+                },
                 error: function () {
                     alert($ContentTree.data('deleteError'));
                 }
@@ -76,6 +78,12 @@ $(function(){
             if ($node.hasClass('jstree-leaf')) {
                 $('#EditContentTree').trigger('click');
             }
+        })
+        .on('click.jstree', function(event){
+            showNodeDetails();
+        })
+        .on('ready.jstree', function(){
+            showNodeDetails();
         });
 
     $ContentTree.jstree({
@@ -158,7 +166,6 @@ $(function(){
         }, 250);
     });
 
-
     $('#AddContentTree').click(function(){
         var ref = $ContentTree.jstree(true),
             sel = ref.get_selected();
@@ -184,5 +191,28 @@ $(function(){
         if(!sel.length) { return false; }
         ref.delete_node(sel);
     });
+
+    var showNodeDetails = function(){
+        $('#ContentNodeDetailsPanel').html('');
+        setTimeout(function(){
+            var $node = $('.jstree-clicked').closest('.jstree-node');
+
+            if (!$node.attr('id')) return false;
+
+            $.ajax({
+                url: $ContentTree.data('details'),
+                data: {
+                    "id": $node.attr('id')
+                },
+                dataType: "json",
+                success: function(result){
+                    $('#ContentNodeDetailsPanel').html(result.html);
+                },
+                error: function(){
+                    $('#ContentNodeDetailsPanel').html('');
+                }
+            });
+        }, 10);
+    };
 
 });

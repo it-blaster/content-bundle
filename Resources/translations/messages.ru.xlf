@@ -53,6 +53,46 @@
                 <target>Страница не найдена в текущей локали</target>
             </trans-unit>
 
+            <trans-unit id="etfostra_side_panel_url">
+                <source>etfostra_side_panel_url</source>
+                <target>Ссылка</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_side_panel_slug">
+                <source>etfostra_side_panel_slug</source>
+                <target>Slug</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_side_panel_parent">
+                <source>etfostra_side_panel_parent</source>
+                <target>Родитель</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_side_panel_module">
+                <source>etfostra_side_panel_module</source>
+                <target>Модуль</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_side_panel_show_menu">
+                <source>etfostra_side_panel_show_menu</source>
+                <target>В меню</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_side_panel_show_menu_yes">
+                <source>etfostra_side_panel_show_menu_yes</source>
+                <target>Да</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_side_panel_show_menu_no">
+                <source>etfostra_side_panel_show_menu_no</source>
+                <target>Нет</target>
+            </trans-unit>
+
+            <trans-unit id="etfostra_side_panel_active_locales">
+                <source>etfostra_side_panel_active_locales</source>
+                <target>Активные локали</target>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>

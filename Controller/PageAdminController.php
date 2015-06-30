@@ -7,6 +7,7 @@ use Etfostra\ContentBundle\Model\PageQuery;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -229,6 +230,36 @@ class PageAdminController extends CRUDController
         $this->clearRouteCache();
 
         return new JsonResponse(array());
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     * @throws \PropelException
+     */
+    public function ajaxDetailsAction(Request $request)
+    {
+        if (false === $this->admin->isGranted('VIEW')) {
+            throw new AccessDeniedException();
+        }
+
+        $page = PageQuery::create()->findOneById($request->query->get('id'));
+        if (!$page) {
+            throw new NotFoundHttpException();
+        }
+        $page->setLocale($request->getLocale());
+        if($page->hasParent()) {
+            $page->getParent()->setLocale($page->getLocale());
+        }
+
+        $html = $this->renderView('EtfostraContentBundle:SonataAdmin:list_details.html.twig', array(
+            'page' => $page
+        ));
+
+        return new JsonResponse(array(
+            'html' => $html
+        ));
     }
 
     /**

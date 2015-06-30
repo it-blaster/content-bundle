@@ -12,3 +12,12 @@
 #ContentTree {
     overflow: auto;
 }
+
+#ContentTreeSidePanel dt {
+    width: 80px;
+}
+
+#ContentTreeSidePanel dd {
+    margin-left: 100px;
+    word-break: break-all;
+}

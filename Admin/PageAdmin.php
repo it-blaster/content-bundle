@@ -90,7 +90,8 @@ class PageAdmin extends Admin
             ->add('ajaxAdd')
             ->add('ajaxRename')
             ->add('ajaxDelete')
-            ->add('ajaxMove');
+            ->add('ajaxMove')
+            ->add('ajaxDetails');
     }
 
     /**

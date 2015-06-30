@@ -1,0 +1,41 @@
+<div class="panel panel-default" id="ContentTreeSidePanel">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{ page.title }}</h3>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            {% set page_path = page_path_by_slug(page.slug) %}
+            {% if page_path %}
+                <dt>{{ "etfostra_side_panel_url"|trans }}</dt>
+                <dd><a href="{{ page_path }}" target="_blank">{{ page_path }}</a></dd>
+            {% endif %}
+            {% if page.hasParent %}
+                <dt>{{ "etfostra_side_panel_slug"|trans }}</dt>
+                <dd>{{ page.slug }}</dd>
+                <dt>{{ "etfostra_side_panel_parent"|trans }}</dt>
+                <dd>{{ page.parent.title }}</dd>
+                <dt>{{ "etfostra_side_panel_show_menu"|trans }}</dt>
+                <dd>
+                    {% if page.showMenu %}
+                        {{ "etfostra_side_panel_show_menu_yes"|trans }}
+                    {% else %}
+                        {{ "etfostra_side_panel_show_menu_no"|trans }}
+                    {% endif %}
+                </dd>
+                <dt>{{ "etfostra_side_panel_active_locales"|trans }}</dt>
+                <dd>
+                    {% for localPage in page.pageI18ns %}
+                        <span style="{% if not localPage.active %}text-decoration: line-through{% endif %}">{{ localPage.locale|upper }}</span>
+                        {% spaceless %}
+                            {% if not loop.last %}, {% endif %}
+                        {% endspaceless %}
+                    {% endfor %}
+                </dd>
+            {% endif %}
+            {% if page.module %}
+                <dt>{{ "etfostra_side_panel_module"|trans }}</dt>
+                <dd>{{ page.module }}</dd>
+            {% endif %}
+        </dl>
+    </div>
+</div>
